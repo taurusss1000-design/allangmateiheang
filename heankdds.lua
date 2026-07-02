@@ -2033,7 +2033,7 @@ end
 
 -- ① Load module dari GitHub
 local BaristaModule = loadstring(game:HttpGet(
-    "https://raw.githubusercontent.com/SapuLidi-Eak/mantaplek123/refs/heads/main/lapuks.lua"
+    "https://raw.githubusercontent.com/taurusss1000-design/dasdasd/refs/heads/main/modulbarista.lua"
 ))()
 
 -- ② Sambungkan webhook repair & kick event dari dds.lua ke module
