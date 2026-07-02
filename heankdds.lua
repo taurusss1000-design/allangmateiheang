@@ -44,11 +44,21 @@ local Old; Old = hookfunction(getrenv().debug.info, newcclosure(function(...)
     local LevelOrFunc, Info = ...
 
     if Detected and LevelOrFunc == Detected then
-        if DEBUG then
-            warn(`zins | adonis bypassed`)
-        end
+        -- Jangan pakai coroutine.yield karena akan mematikan thread Adonis Ping!
+        -- Kembalikan info palsu seolah-olah ini fungsi Lua asli
+        if Info == "s" then return "AntiCheat" end
+        if Info == "l" then return 1 end
+        if Info == "a" then return 0, false end
+        if Info == "n" then return "Detected" end
+        return Old(...)
+    end
 
-        return coroutine.yield(coroutine.running())
+    if Kill and LevelOrFunc == Kill then
+        if Info == "s" then return "AntiCheat" end
+        if Info == "l" then return 1 end
+        if Info == "a" then return 0, false end
+        if Info == "n" then return "Kill" end
+        return Old(...)
     end
 
     return Old(...)
@@ -987,33 +997,52 @@ end
 
 local function _tweenVehicle(vehicle, targetCFrame, duration)
     local TweenService = game:GetService("TweenService")
-    local RunService   = game:GetService("RunService")
-    local mainPart = vehicle.PrimaryPart
+    
+    local mainPart = vehicle.PrimaryPart or vehicle:FindFirstChildWhichIsA("BasePart")
     if not mainPart then return end
+    
     local parts = {}
+    local originalAnchored = {}
+    local tempWelds = {}
+    
     for _, part in ipairs(vehicle:GetDescendants()) do
-        if part:IsA("BasePart") then table.insert(parts, part) end
+        if part:IsA("BasePart") then
+            table.insert(parts, part)
+            originalAnchored[part] = part.Anchored
+        end
     end
-    for _, part in ipairs(parts) do part.Anchored = true end
-    local mainCFrame  = mainPart.CFrame
-    local partOffsets = {}
+    
+    -- Anchor mainPart, unanchor sisanya dan pasang WeldConstraint sementara
+    mainPart.Anchored = true
     for _, part in ipairs(parts) do
-        if part ~= mainPart then partOffsets[part] = mainCFrame:ToObjectSpace(part.CFrame) end
+        if part ~= mainPart then
+            part.Anchored = false
+            local weld = Instance.new("WeldConstraint")
+            weld.Part0 = mainPart
+            weld.Part1 = part
+            weld.Parent = mainPart
+            table.insert(tempWelds, weld)
+        end
     end
+    
     local tweenInfo = TweenInfo.new(duration, Enum.EasingStyle.Linear)
     local tween = TweenService:Create(mainPart, tweenInfo, { CFrame = targetCFrame })
     tween:Play()
-    local conn = RunService.Heartbeat:Connect(function()
-        local currentMain = mainPart.CFrame
-        for _, part in ipairs(parts) do
-            if part ~= mainPart and partOffsets[part] then
-                part.CFrame = currentMain:ToWorldSpace(partOffsets[part])
-            end
-        end
-    end)
     tween.Completed:Wait()
-    conn:Disconnect()
-    for _, part in ipairs(parts) do part.Anchored = false end
+    
+    -- Hapus weld sementara
+    for _, weld in ipairs(tempWelds) do
+        weld:Destroy()
+    end
+    
+    -- Kembalikan state awal dan amankan physics
+    for _, part in ipairs(parts) do 
+        pcall(function()
+            part.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
+            part.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
+        end)
+        part.Anchored = originalAnchored[part] or false
+    end
 end
 
 local function walkToAndFace(hum, char, targetPos, lookVec, radiusOK)
@@ -1027,13 +1056,13 @@ local function walkToAndFace(hum, char, targetPos, lookVec, radiusOK)
 
         local dist = (hrp.Position - targetPos).Magnitude
         if dist <= radiusOK then
-            print("[Courier] Sudah di lokasi! (dist: " .. math.floor(dist) .. ")")
+            -- print("[Courier] Sudah di lokasi! (dist: " .. math.floor(dist) .. ")")
             break
         end
 
         faceDirection(lookVec)
 
-        print("[Courier] Walk attempt #" .. attempt .. " | dist: " .. math.floor(dist))
+        -- print("[Courier] Walk attempt #" .. attempt .. " | dist: " .. math.floor(dist))
         hum:MoveTo(targetPos)
 
         local t = tick()
@@ -1054,7 +1083,7 @@ local function stopCourierLoop()
     if ServiceEventConn then ServiceEventConn:Disconnect() ServiceEventConn = nil end
     local cam = Workspace.CurrentCamera
     if cam then cam.CameraType = Enum.CameraType.Custom end
-    print("[Courier] Stopped.")
+    -- print("[Courier] Stopped.")
 end
 
 -- =================================================================
@@ -1064,7 +1093,7 @@ local function startCourierLoop()
     local job = CourierJob
     if courierRunning then return end
     courierRunning = true
-    print("[Courier] Loop Dimulai - Manual Spot Mode")
+    -- print("[Courier] Loop Dimulai - Manual Spot Mode")
 
     local activePackageNum = nil
 
@@ -1073,7 +1102,7 @@ local function startCourierLoop()
         ServiceEventConn = serviceEvent.OnClientEvent:Connect(function(eventName, action, paketNum)
             if action == "Create" then
                 activePackageNum = tostring(paketNum)
-                print("[Courier] Paket #" .. activePackageNum .. " Terdeteksi!")
+                -- print("[Courier] Paket #" .. activePackageNum .. " Terdeteksi!")
             elseif action == "Remove" then
                 if activePackageNum == tostring(paketNum) then activePackageNum = nil end
             end
@@ -1092,7 +1121,7 @@ local function startCourierLoop()
     task.wait(1)
     local motor = findCourierMotor()
     if motor then
-        print("[Courier] Tweening ke spot start job...")
+        -- print("[Courier] Tweening ke spot start job...")
         _tweenVehicle(motor, CFrame.new(job.X, job.Y, job.Z), TWEEN_DURATION)
     end
     task.wait(0.5)
@@ -1134,14 +1163,14 @@ local function startCourierLoop()
         end
 
         -- 1. Cari motor yang ada dulu, kalau tidak ada baru spawn
-        print("[Courier] Cek motor untuk paket #" .. activePackageNum)
+        -- print("[Courier] Cek motor untuk paket #" .. activePackageNum)
         local existingMotor = findCourierMotor()
         if existingMotor then
-            print("[Courier] Motor ditemukan, langsung naik!")
+            -- print("[Courier] Motor ditemukan, langsung naik!")
             rideCourierMotor()
             task.wait(1)
         else
-            print("[Courier] Motor tidak ada, spawn baru...")
+            -- print("[Courier] Motor tidak ada, spawn baru...")
             pcall(function() ReplicatedStorage:WaitForChild("SpawnCarEvents"):WaitForChild("SpawnCar"):FireServer(SELECTED_CAR) end)
             task.wait(4)
             rideCourierMotor()
@@ -1151,27 +1180,27 @@ local function startCourierLoop()
         -- 2. Tween ke Spot Teleport
         local currentMotor = findCourierMotor()
         if currentMotor then
-            print("[Courier] Tweening ke spot aman paket #" .. activePackageNum)
+            -- print("[Courier] Tweening ke spot aman paket #" .. activePackageNum)
             _tweenVehicle(currentMotor, data.Tween, TWEEN_DURATION)
         end
 
         -- 3. Sampai di lokasi tween → wait 2 detik → jump keluar kendaraan
-        print("[Courier] Tiba di spot, wait 2 detik lalu jump keluar...")
+        -- print("[Courier] Tiba di spot, wait 2 detik lalu jump keluar...")
         task.wait(2)
         jumpAndWait()
-        print("[Courier] Sudah keluar kendaraan, mulai walk!")
+        -- print("[Courier] Sudah keluar kendaraan, mulai walk!")
 
         -- 4. Walk ke lokasi paket
         local char = LocalPlayer.Character
         local hum  = char and char:FindFirstChildOfClass("Humanoid")
         if hum then
-            print("[Courier] Walking ke titik paket #" .. activePackageNum)
+            -- print("[Courier] Walking ke titik paket #" .. activePackageNum)
             walkToAndFace(hum, char, data.Walk, data.WalkLook, 4)
         end
         task.wait(0.3)
 
         -- 5. Rotate player ke arah paket, set kamera, wait 1 detik
-        print("[Courier] Rotate player + kamera, wait 1 detik...")
+        -- print("[Courier] Rotate player + kamera, wait 1 detik...")
         faceDirection(data.WalkLook)
         task.wait(0.5)
         
@@ -1181,7 +1210,7 @@ local function startCourierLoop()
 
         -- 6. Hold paket setelah dipastikan sudah di lokasi
         local currentPackage = activePackageNum
-        print("[Courier] Mencoba hold paket #" .. currentPackage)
+        -- print("[Courier] Mencoba hold paket #" .. currentPackage)
         
         while courierRunning and activePackageNum == currentPackage do
             pcall(function()
@@ -1203,10 +1232,10 @@ local function startCourierLoop()
         end
 
         -- 6. Look ke arah AfterLook
-        print("[Courier] Memutar arah sebelum spawn kendaraan...")
+        -- print("[Courier] Memutar arah sebelum spawn kendaraan...")
         lookToDirection(data.AfterLook)
 
-        print("[Courier] Paket #" .. currentPackage .. " Selesai!")
+        -- print("[Courier] Paket #" .. currentPackage .. " Selesai!")
         totalCourierCycle = totalCourierCycle + 1
         
         task.wait(3)
@@ -2195,7 +2224,7 @@ local whUrlInput = WebhookSection:Input({
         if not isWhLoading then
             whConfig.URL = v
             saveWebhookConfig(whConfig)
-            print("Webhook URL disimpan!")
+            -- print("Webhook URL disimpan!")
         end
     end
 })
@@ -2212,7 +2241,7 @@ local whDelayInput = WebhookSection:Input({
             if not isWhLoading then
                 whConfig.Delay = num
                 saveWebhookConfig(whConfig)
-                print("Webhook delay di-set ke: " .. num .. " detik.")
+                -- print("Webhook delay di-set ke: " .. num .. " detik.")
             end
         end
     end
@@ -2222,7 +2251,7 @@ WebhookSection:Button({
     Title = "Test Webhook",
     Callback = function()
         if webhookURL == "" then
-            print("Masukkan webhook URL dulu!")
+            -- print("Masukkan webhook URL dulu!")
             return
         end
         local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
@@ -2235,7 +2264,7 @@ WebhookSection:Button({
             local profit = uangSekarang - uangAwal
             sendWebhook(uangAwal, uangSekarang, profit, totalCycle)
         else
-            print("Gagal membaca uang dari UI!")
+            -- print("Gagal membaca uang dari UI!")
         end
     end
 })
@@ -2256,10 +2285,10 @@ local whToggle = WebhookSection:Toggle({
                 if moneyLabel then
                     uangAwal = parseUang(moneyLabel.Text)
                     totalCycle = 0
-                    print("Webhook aktif! Uang awal: " .. formatUang(uangAwal))
+                    -- print("Webhook aktif! Uang awal: " .. formatUang(uangAwal))
                 end
             else
-                print("Webhook dimatikan!")
+                -- print("Webhook dimatikan!")
             end
         end
     end
@@ -2308,9 +2337,9 @@ CourierSection:Input({
                 jobConfig.CourierTweenDuration = val
                 saveJobConfig(jobConfig)
             end
-            print("[Courier] Tween duration diset ke " .. val .. " detik")
+            -- print("[Courier] Tween duration diset ke " .. val .. " detik")
         else
-            print("[Courier] Input tidak valid, tetap " .. TWEEN_DURATION .. " detik")
+            -- print("[Courier] Input tidak valid, tetap " .. TWEEN_DURATION .. " detik")
         end
     end
 })
@@ -2332,7 +2361,7 @@ local whCourierUrlInput = CourierWebhookSection:Input({
         if not isWhCourierLoading then
             whCourierConfig.URL = v
             saveCourierWebhookConfig(whCourierConfig)
-            print("Webhook Courier URL disimpan!")
+            -- print("Webhook Courier URL disimpan!")
         end
     end
 })
@@ -2341,7 +2370,7 @@ CourierWebhookSection:Button({
     Title = "Test Courier Webhook",
     Callback = function()
         if webhookCourierURL == "" then
-            print("Masukkan webhook URL dulu!")
+            -- print("Masukkan webhook URL dulu!")
             return
         end
         local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
@@ -2375,7 +2404,7 @@ CourierWebhookSection:Button({
                 end)
             end)
         else
-            print("Gagal membaca uang dari UI!")
+            -- print("Gagal membaca uang dari UI!")
         end
     end
 })
@@ -2396,10 +2425,10 @@ local whCourierToggle = CourierWebhookSection:Toggle({
                 if moneyLabel then
                     uangAwalCourier = parseUang(moneyLabel.Text)
                     totalCourierCycle = 0
-                    print("Webhook Courier aktif! Uang awal: " .. formatUang(uangAwalCourier))
+                    -- print("Webhook Courier aktif! Uang awal: " .. formatUang(uangAwalCourier))
                 end
             else
-                print("Webhook Courier dimatikan!")
+                -- print("Webhook Courier dimatikan!")
             end
         end
     end
@@ -2543,43 +2572,31 @@ local AntiAFK = (function()
     local AA = {
         Enabled = false,
         Thread = nil,
+        Conn = nil,
     }
 
     function AA.Start()
         if AA.Enabled then return end
         AA.Enabled = true
 
+        local VirtualUser = game:GetService("VirtualUser")
+        
+        -- Bypass Anti-AFK Roblox native yang paling ampuh (jalan di background saat idled)
+        AA.Conn = game:GetService("Players").LocalPlayer.Idled:Connect(function()
+            if AA.Enabled then
+                VirtualUser:CaptureController()
+                VirtualUser:ClickButton2(Vector2.new())
+                -- print("[Anti-AFK] Roblox Idle bypassed!")
+            end
+        end)
+
         AA.Thread = task.spawn(function()
             while AA.Enabled do
-                task.wait(1100)
+                task.wait(600)
                 if not AA.Enabled then break end
                 pcall(function()
-                    local char = game.Players.LocalPlayer.Character
-                    local hrp = char and char:FindFirstChild("HumanoidRootPart")
-                    local hum = char and char:FindFirstChild("Humanoid")
-                    if not hrp or not hum then return end
-
-                    -- Tunggu sampai player turun dari motor/kendaraan
-                    while hum.Sit do
-                        task.wait(1)
-                        if not AA.Enabled then return end
-                        char = game.Players.LocalPlayer.Character
-                        hum = char and char:FindFirstChild("Humanoid")
-                        if not hum then return end
-                    end
-
-                    -- Simulasi tekan W sebentar
-                    keypress(0x57)
-                    task.wait(0.1)
-                    keyrelease(0x57)
-                    task.wait(0.1)
-
-                    -- Simulasi tekan space
-                    keypress(0x20)
-                    task.wait(0.1)
-                    keyrelease(0x20)
-
-                    print("Anti AFK: keypress fired!")
+                    VirtualUser:CaptureController()
+                    VirtualUser:ClickButton2(Vector2.new())
                 end)
             end
         end)
@@ -2591,6 +2608,10 @@ local AntiAFK = (function()
         if AA.Thread then
             task.cancel(AA.Thread)
             AA.Thread = nil
+        end
+        if AA.Conn then
+            AA.Conn:Disconnect()
+            AA.Conn = nil
         end
     end
 
@@ -3329,3 +3350,4 @@ task.spawn(function()
 
     isUILoading = false
 end)
+
