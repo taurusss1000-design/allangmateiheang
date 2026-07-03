@@ -900,7 +900,7 @@ local PackageData = {
 local CourierJob = { Name = "Courier", TeamId = 11378976, X = -5158.57, Y = 4.41, Z = -3757.87 }
 local courierRunning   = false
 local ServiceEventConn = nil
-local TWEEN_DURATION   = 60
+local TWEEN_DURATION   = 180
 local uangAwalCourier = nil
 local totalCourierCycle = 0
 local sendCourierWebhook
@@ -1099,7 +1099,7 @@ local function startCourierLoop()
         end)
     end
 
-    pcall(function() ReplicatedStorage:WaitForChild("JobEvents"):WaitForChild("TeamChangeRequest"):FireServer(job.Name, job.TeamId, 1, 0, "Detector") end)
+    pcall(function() ReplicatedStorage:WaitForChild("JobEvents"):WaitForChild("TeamChangeRequest"):FireServer("Courier", 11378976, 0, 0, "Detector") end)
     task.wait(1.5)
 
     local SELECTED_CAR = SpawnCar.SelectedCar or "Yamahax-MioSporty"
@@ -2141,7 +2141,12 @@ JobSection:Input({
     Placeholder = "Contoh: 90",
     Callback    = function(value)
         local num = tonumber(value)
-        if num and num > 0 then
+        if num then
+            if num < 120 then 
+                num = 120 
+                print("[Barista] Timeout minimal 120 detik, diset ke 120!")
+            end
+            
             BaristaModule.timeoutMax = num
             if not isBLoading then
                 bCfg.TimeoutMax = num
@@ -2321,7 +2326,12 @@ CourierSection:Input({
     Type        = "Input",
     Callback    = function(input)
         local val = tonumber(input)
-        if val and val > 0 then
+        if val then
+            if val < 180 then 
+                val = 180 
+                print("[Courier] Kecepatan minimal 180 detik, diset ke 180!")
+            end
+            
             TWEEN_DURATION = val
             if not isJobLoading then
                 jobConfig.CourierTweenDuration = val
@@ -2670,7 +2680,7 @@ local AutoRejoin = (function()
     -- URL script yang akan di-execute otomatis setelah rejoin
     -- WARNING: Ganti SCRIPT_URL dengan URL script UTAMA (misal pastebin/github raw cobadds.lua lo)
     -- JANGAN pakai URL vyperui.lua karena itu cuma UI-nya saja!
-    local SCRIPT_URL = "https://raw.githubusercontent.com/taurusss1000-design/allangmateiheang/refs/heads/main/heankdds.lua" 
+    local SCRIPT_URL = "https://raw.githubusercontent.com/AwoakwoakSikat/emangbowleh/refs/heads/main/loader-news.lua" 
     local EXEC_DELAY = 30 -- detik tunggu sebelum execute setelah rejoin (dilebihin dikit biar game load)
 
     -- Cari queue_on_teleport dari berbagai executor secara aman
