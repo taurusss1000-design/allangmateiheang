@@ -125,6 +125,7 @@ WindUI:SetTheme("MachTheme")
 
 Window:Tag({ Title = "PREMIUM", Color = Mains })
 Window:Tag({ Title = "BETA", Color = Purple })
+Window:Tag({ Title = "V1.1", Color = Purple })
 
 local TweenService = game:GetService("TweenService")
 local protectGui
@@ -900,7 +901,7 @@ local PackageData = {
 local CourierJob = { Name = "Courier", TeamId = 11378976, X = -5158.57, Y = 4.41, Z = -3757.87 }
 local courierRunning   = false
 local ServiceEventConn = nil
-local TWEEN_DURATION   = 180
+local TWEEN_DURATION   = 60
 local uangAwalCourier = nil
 local totalCourierCycle = 0
 local sendCourierWebhook
@@ -2141,12 +2142,7 @@ JobSection:Input({
     Placeholder = "Contoh: 90",
     Callback    = function(value)
         local num = tonumber(value)
-        if num then
-            if num < 120 then 
-                num = 120 
-                print("[Barista] Timeout minimal 120 detik, diset ke 120!")
-            end
-            
+        if num and num > 0 then
             BaristaModule.timeoutMax = num
             if not isBLoading then
                 bCfg.TimeoutMax = num
@@ -2326,12 +2322,7 @@ CourierSection:Input({
     Type        = "Input",
     Callback    = function(input)
         local val = tonumber(input)
-        if val then
-            if val < 180 then 
-                val = 180 
-                print("[Courier] Kecepatan minimal 180 detik, diset ke 180!")
-            end
-            
+        if val and val > 0 then
             TWEEN_DURATION = val
             if not isJobLoading then
                 jobConfig.CourierTweenDuration = val
