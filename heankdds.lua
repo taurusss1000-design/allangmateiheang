@@ -856,7 +856,7 @@ local PackageData = {
         Walk      = Vector3.new(-8776.65, 3.15, 645.71),
         WalkLook  = Vector3.new(0.8627, 0, -0.5057),
         AfterLook = Vector3.new(-0.8474, 0, 0.5310),
-        Camera    = CFrame.new(Vector3.new(-8785.28, 11.15, 650.77), Vector3.new(-8775.79, 3.15, 645.20)),
+        Camera    = CFrame.new(Vector3.new(-8786.53, 8.41, 652.19), Vector3.new(-8785.83, 8.01, 651.61)),
     },
     ["4"] = {
         Tween     = CFrame.new(Vector3.new(714.63, 3.24, -3980.11), Vector3.new(714.63, 3.24, -3980.11) + Vector3.new(0.0438, 0, 0.9990)),
@@ -1190,12 +1190,16 @@ local function startCourierLoop()
         end
         task.wait(0.3)
 
-        -- 5. Rotate player ke arah paket, set kamera, wait 1 detik
-        print("[Courier] Rotate player + kamera, wait 1 detik...")
+        -- 5. Rotate player ke arah paket, set kamera sesuai data.Camera, wait 1 detik
+        print("[Courier] Rotate player + set kamera khusus paket, wait 1 detik...")
         faceDirection(data.WalkLook)
         task.wait(0.5)
         
-        setCameraBehindPlayer()
+        local cam = Workspace.CurrentCamera
+        if cam and data.Camera then
+            cam.CameraType = Enum.CameraType.Scriptable
+            cam.CFrame = data.Camera
+        end
         
         task.wait(1)
 
@@ -1221,6 +1225,9 @@ local function startCourierLoop()
             end)
             task.wait(1)
         end
+        
+        -- Kembalikan kamera ke normal
+        if cam then cam.CameraType = Enum.CameraType.Custom end
 
         -- 6. Look ke arah AfterLook
         print("[Courier] Memutar arah sebelum spawn kendaraan...")
