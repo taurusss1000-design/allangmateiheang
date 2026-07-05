@@ -125,7 +125,7 @@ WindUI:SetTheme("MachTheme")
 
 Window:Tag({ Title = "PREMIUM", Color = Mains })
 Window:Tag({ Title = "BETA", Color = Purple })
-Window:Tag({ Title = "V1.1", Color = Purple })
+Window:Tag({ Title = "V1.2", Color = Purple })
 
 local TweenService = game:GetService("TweenService")
 local protectGui
@@ -152,7 +152,7 @@ buttonFrame.Position = UDim2.new(0, 20, 0, 20)
 buttonFrame.BackgroundTransparency = 1
 buttonFrame.Parent = screenGui
 
-local imageButton = Instance.new("ImageButton")
+imageButton = Instance.new("ImageButton")
 imageButton.Size = UDim2.new(1, 0, 1, 0)
 imageButton.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 imageButton.BackgroundTransparency = 0.2
@@ -344,7 +344,7 @@ local ServerInfo = InfoTab:Paragraph({
 
 
 local Players = game:GetService("Players")
-local Workspace = game:GetService("Workspace")
+Workspace = game:GetService("Workspace")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 local LocalPlayer = Players.LocalPlayer
@@ -1462,7 +1462,7 @@ end
 -- =============================================
 
 
-local RaceTab = Window:Tab({
+RaceTab = Window:Tab({
     Title = "Race",
     Icon = "motorbike",
 	IconColor = Mains,
@@ -1470,9 +1470,9 @@ local RaceTab = Window:Tab({
 	Border = true,
 })
 
-local SpeedSection = RaceTab:Section({ Title = "Speed Hack", Box = true, TextXAlignment = "Center", TextSize = 15, Opened = false })
+SpeedSection = RaceTab:Section({ Title = "Speed Hack", Box = true, TextXAlignment = "Center", TextSize = 15, Opened = false })
 
-local speedValueInput = SpeedSection:Input({
+speedValueInput = SpeedSection:Input({
     Type = "Input", 
     Title = "Speed Value",
     Value = uiConfig.SpeedValue or "100",
@@ -1490,7 +1490,7 @@ local speedValueInput = SpeedSection:Input({
 })
 VehicleSpeed.SetSpeed(tonumber(uiConfig.SpeedValue) or 100)
 
-local speedHackToggle = SpeedSection:Toggle({
+speedHackToggle = SpeedSection:Toggle({
     Title = "Enable Speed Hack",
     Value = false,
     Callback = function(on)
@@ -1502,9 +1502,9 @@ local speedHackToggle = SpeedSection:Toggle({
     end
 })
 
-local SlowSection = RaceTab:Section({ Title = "Slow Race (Gradual)", Box = true, TextXAlignment = "Center", TextSize = 15, Opened = false })
+SlowSection = RaceTab:Section({ Title = "Slow Race (Gradual)", Box = true, TextXAlignment = "Center", TextSize = 15, Opened = false })
 
-local slowMaxSpeedInput = SlowSection:Input({
+slowMaxSpeedInput = SlowSection:Input({
     Type = "Input", 
     Title = "Max Speed",
     Value = uiConfig.SlowMaxSpeed or "200",
@@ -1522,7 +1522,7 @@ local slowMaxSpeedInput = SlowSection:Input({
 })
 SlowRace.MaxSpeed = tonumber(uiConfig.SlowMaxSpeed) or 200
 
-local slowAccelInput = SlowSection:Input({
+slowAccelInput = SlowSection:Input({
     Type = "Input", 
     Title = "Acceleration (kelipatan)",
     Value = uiConfig.SlowAccel or "3",
@@ -1540,7 +1540,7 @@ local slowAccelInput = SlowSection:Input({
 })
 SlowRace.AccelMultiplier = tonumber(uiConfig.SlowAccel) or 3
 
-local slowRaceToggle = SlowSection:Toggle({
+slowRaceToggle = SlowSection:Toggle({
     Title = "Enable Slow Race",
     Value = false,
     Callback = function(on)
@@ -1552,7 +1552,7 @@ local slowRaceToggle = SlowSection:Toggle({
     end
 })
 
-local CinematicSection = RaceTab:Section({ Title = "Cinematic", Box = true, TextXAlignment = "Center", TextSize = 15, Opened = false })
+CinematicSection = RaceTab:Section({ Title = "Cinematic", Box = true, TextXAlignment = "Center", TextSize = 15, Opened = false })
 
 CinematicSection:Toggle({
     Title = "Enable Cinematic",
@@ -1569,7 +1569,7 @@ CinematicSection:Toggle({
 local LightingService = game:GetService("Lighting")
 local originalLighting = {}
 
-local ultraGrafikToggle = CinematicSection:Toggle({
+ultraGrafikToggle = CinematicSection:Toggle({
     Title = "Grafik Mode Ultra",
     Value = false,
     Callback = function(on)
@@ -1680,7 +1680,7 @@ local ultraGrafikToggle = CinematicSection:Toggle({
 
 local initialCarList = getCarList()
 
-local GarageTab = Window:Tab({
+GarageTab = Window:Tab({
     Title = "Garasi",
     Icon = "warehouse",
 	IconColor = Mains,
@@ -1688,9 +1688,9 @@ local GarageTab = Window:Tab({
 	Border = true,
 })
 
-local GarageSection = GarageTab:Section({ Title = "Spawn Kendaraan", Box = true, TextXAlignment = "Center", TextSize = 15, Opened = true })
+GarageSection = GarageTab:Section({ Title = "Spawn Kendaraan", Box = true, TextXAlignment = "Center", TextSize = 15, Opened = true })
 
-local carDropdown = GarageSection:Dropdown({
+carDropdown = GarageSection:Dropdown({
     Title = "Pilih Kendaraan",
     Multi = false,
     Options = initialCarList,
@@ -1731,7 +1731,7 @@ GarageSection:Button({
     Callback = function() rideMotor() end
 })
 
-local autoRideToggle = GarageSection:Toggle({
+autoRideToggle = GarageSection:Toggle({
     Title = "Auto Ride after Spawn",
     Value = false,
     Callback = function(on)
@@ -1743,7 +1743,7 @@ local autoRideToggle = GarageSection:Toggle({
     end
 })
 
-local autoRideAlwaysToggle = GarageSection:Toggle({
+autoRideAlwaysToggle = GarageSection:Toggle({
     Title = "Auto Ride Always",
     Value = false,
     Callback = function(on)
@@ -1817,7 +1817,7 @@ end
 -- GUI - TAB INJECTION
 -- =============================================
 
-local InjectionTab = Window:Tab({
+InjectionTab = Window:Tab({
     Title = "Injection",
     Icon = "syringe",
     IconColor = Mains,
@@ -1825,14 +1825,14 @@ local InjectionTab = Window:Tab({
     Border = true,
 })
 
-local PresetSection = InjectionTab:Section({ Title = "Preset Injection", Box = true, TextXAlignment = "Center", TextSize = 15, Opened = false })
+PresetSection = InjectionTab:Section({ Title = "Preset Injection", Box = true, TextXAlignment = "Center", TextSize = 15, Opened = false })
 
 PresetSection:Button({ Title = "MODE SUNMORI", Callback = function() InjectMesin(1.5, 2000, 0.9, 0.9, "Mode Sunmori Aktif") end })
 PresetSection:Button({ Title = "MODE BALAP LIAR", Callback = function() InjectMesin(3.5, 5000, 0.75, 0.75, "Mode Balap Aktif") end })
 PresetSection:Button({ Title = "MODE DEWA", Callback = function() InjectMesin(8, 15000, 0.45, 0.45, "Mode Dewa Aktif") end })
 PresetSection:Button({ Title = "RESET STANDAR PABRIK", Callback = function() WindUI:Notify({ Title = "â„¹ï¸ Info", Content = "Respawn kendaraan dari menu game untuk reset.", Duration = 5 }) end })
 
-local CustomSection = InjectionTab:Section({ Title = "Custom Injection", Box = true, TextXAlignment = "Center", TextSize = 15, Opened = false })
+CustomSection = InjectionTab:Section({ Title = "Custom Injection", Box = true, TextXAlignment = "Center", TextSize = 15, Opened = false })
 
 local customHP, customRPM, customRatio, customFD = 2, 5000, 0.8, 0.8
 
@@ -1997,6 +1997,57 @@ function sendCourierWebhook()
     end)
 end
 
+local whOfficeConfigPath = "DDS_WebhookOfficeConfig.json"
+local function loadOfficeWebhookConfig()
+    local ok, data = pcall(readfile, whOfficeConfigPath)
+    if ok and data then
+        local ok2, decoded = pcall(function() return HttpService:JSONDecode(data) end)
+        if ok2 then return decoded end
+    end
+    return {}
+end
+local function saveOfficeWebhookConfig(data) pcall(writefile, whOfficeConfigPath, HttpService:JSONEncode(data)) end
+local whOfficeConfig      = loadOfficeWebhookConfig()
+local isWhOfficeLoading   = true
+local webhookOfficeURL    = whOfficeConfig.URL    or ""
+local webhookOfficeActive = whOfficeConfig.Active or false
+local uangAwalOffice      = nil
+
+function sendOfficeWebhook()
+    if not webhookOfficeActive or webhookOfficeURL == "" then return end
+    local PlayerGui   = LocalPlayer:WaitForChild("PlayerGui")
+    local moneyLabel  = nil
+    pcall(function() moneyLabel = PlayerGui.MainUI.Frame4.TextLabel end)
+    if not moneyLabel then return end
+    
+    local uangSekarangNum = parseUang(moneyLabel.Text)
+    if uangAwalOffice == nil then uangAwalOffice = uangSekarangNum end
+    local profit = uangSekarangNum - uangAwalOffice
+    local cycle = OfficeModule.totalCycle or 0
+
+    local payload = {
+        embeds = {{
+            title       = "💼 Office Job - Monitoring Profit",
+            description = "**Status:** `✅ Farming Office Aktif`",
+            color       = 16766720,
+            fields      = {
+                { name = "💵 Uang Awal",    value = "**" .. formatUang(uangAwalOffice) .. "**",     inline = false },
+                { name = "💰 Uang Sekarang",value = "**" .. formatUang(uangSekarangNum) .. "**", inline = false },
+                { name = "📈 Total Profit", value = "```diff\n+ " .. formatUang(profit) .. "\n```", inline = false },
+                { name = "🔄 Total Cycle",  value = "**" .. tostring(cycle) .. "x**",        inline = false },
+            },
+            footer = { text = "DDS Premium Script   Time: " .. os.date("%H:%M:%S") }
+        }}
+    }
+    local body = HttpService:JSONEncode(payload)
+    task.spawn(function()
+        pcall(function()
+            if syn and syn.request then syn.request({ Url = webhookOfficeURL, Method = "POST", Headers = { ["Content-Type"] = "application/json" }, Body = body })
+            elseif request then request({ Url = webhookOfficeURL, Method = "POST", Headers = { ["Content-Type"] = "application/json" }, Body = body }) end
+        end)
+    end)
+end
+
 local function sendWebhookRepairEvent(msg)
     if not webhookActive or webhookURL == "" then return end
     local payload = {
@@ -2036,12 +2087,25 @@ local function sendWebhookKickEvent(msg)
 end
 
 -- =============================================
+-- AUTO JOB Office Loader
+-- =============================================
+local OfficeModule = loadstring(game:HttpGet(
+    "https://raw.githubusercontent.com/taurusss1000-design/dasdasd/refs/heads/main/moduloffice3.lua?t=" .. tostring(tick())
+))()
+
+OfficeModule.onCycle = sendOfficeWebhook
+
+
+
+
+
+-- =============================================
 -- AUTO JOB BARISTA LOADER
 -- =============================================
 
 -- ① Load module dari GitHub
 local BaristaModule = loadstring(game:HttpGet(
-    "https://raw.githubusercontent.com/taurusss1000-design/dasdasd/refs/heads/main/modulbarista.lua"
+    "https://raw.githubusercontent.com/taurusss1000-design/dasdasd/refs/heads/main/modulbarista.lua?t=" .. tostring(tick())
 ))()
 
 -- ② Sambungkan webhook repair & kick event dari dds.lua ke module
@@ -2077,6 +2141,19 @@ end
 local bCfg       = loadBaristaConfig()
 local isBLoading = true
 
+local officeConfigPath = "DDS_OfficeConfig.json"
+local function loadOfficeConfig()
+    local ok, data = pcall(readfile, officeConfigPath)
+    if ok and data then
+        local ok2, decoded = pcall(function() return HttpService:JSONDecode(data) end)
+        if ok2 and decoded then return decoded end
+    end
+    return {}
+end
+local function saveOfficeConfig(data) pcall(writefile, officeConfigPath, HttpService:JSONEncode(data)) end
+local oCfg       = loadOfficeConfig()
+local isOLoading = true
+
 -- Apply saved config ke module
 if bCfg.TimeoutMax     then BaristaModule.timeoutMax     = bCfg.TimeoutMax     end
 if bCfg.TimeoutEnabled ~= nil then BaristaModule.timeoutEnabled = bCfg.TimeoutEnabled end
@@ -2087,12 +2164,12 @@ if bCfg.KickLimitEnabled ~= nil then BaristaModule.kickLimitEnabled = bCfg.KickL
 -- UI — JOB SECTION 
 -- =============================================
 
-local AutoJobTabSection = Window:Section({
+AutoJobTabSection = Window:Section({
     Title = "Auto Job",
     Opened = true,
 })
 
-local BaristaTab = AutoJobTabSection:Tab({
+BaristaTab = AutoJobTabSection:Tab({
     Title = "Barista & Monitoring",
     Icon = "coffee",
     IconColor = Purple,
@@ -2100,7 +2177,7 @@ local BaristaTab = AutoJobTabSection:Tab({
     Border = true,
 })
 
-local CourierTab = AutoJobTabSection:Tab({
+CourierTab = AutoJobTabSection:Tab({
     Title = "Courier",
     Icon = "package",
     IconColor = Color3.fromHex("#ECA201"), -- Yellow
@@ -2108,11 +2185,188 @@ local CourierTab = AutoJobTabSection:Tab({
     Border = true,
 })
 
+OfficeTab = AutoJobTabSection:Tab({
+    Title = "Office",
+    Icon = "office",
+    IconColor = Color3.fromHex("#ECA201"), -- Yellow
+    IconShape = "Square",
+    Border = true,
+})
+
+
+
+-- =============================================
+-- OFFICE (Inside OfficeTab)
+-- =============================================
+local JobSectionOffice = OfficeTab:Section({
+    Title          = "Auto Job Office",
+    Box            = true,
+    TextXAlignment = "Center",
+    TextSize       = 15,
+    Opened         = true,
+})
+
+-- Toggle Auto Office
+OfficeToggle = JobSectionOffice:Toggle({
+    Title = "Auto Office",
+    Value = false,
+    Callback = function(on)
+        if not isOLoading then
+            oCfg.AutoOffice = on
+            saveOfficeConfig(oCfg)
+        end
+        if on then
+            OfficeModule:Start()
+        else
+            OfficeModule:Stop()
+        end
+    end
+})
+
+OfficeWebhookSection = OfficeTab:Section({ Title = "Discord Webhook Office", Box = true, TextXAlignment = "Center", TextSize = 15, Opened = true })
+
+whOfficeUrlInput = OfficeWebhookSection:Input({
+    Type = "Input",
+    Title = "Webhook URL",
+    Value = whOfficeConfig.URL or "",
+    Placeholder = "https://discord.com/api/webhooks/...",
+    Callback = function(v)
+        webhookOfficeURL = v
+        if not isWhOfficeLoading then
+            whOfficeConfig.URL = v
+            saveOfficeWebhookConfig(whOfficeConfig)
+            print("Webhook Office URL disimpan!")
+        end
+    end
+})
+
+OfficeWebhookSection:Button({
+    Title = "Test Office Webhook",
+    Callback = function()
+        if webhookOfficeURL == "" then
+            print("Masukkan webhook URL dulu!")
+            return
+        end
+        local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+        local moneyLabel = nil
+        pcall(function() moneyLabel = PlayerGui.MainUI.Frame4.TextLabel end)
+        
+        if moneyLabel then
+            local uangSekarang = parseUang(moneyLabel.Text)
+            if uangAwalOffice == nil then uangAwalOffice = uangSekarang end
+            local profit = uangSekarang - uangAwalOffice
+            local cycle = OfficeModule.totalCycle or 0
+            
+            local payload = {
+                embeds = {{
+                    title       = "💼 Office Job - Test Webhook",
+                    description = "**Status:** `✅ Test Connection`",
+                    color       = 16766720,
+                    fields      = {
+                        { name = "💵 Uang Awal",    value = "**" .. formatUang(uangAwalOffice) .. "**",     inline = false },
+                        { name = "💰 Uang Sekarang",value = "**" .. formatUang(uangSekarang) .. "**", inline = false },
+                        { name = "📈 Total Profit", value = "```diff\n+ " .. formatUang(profit) .. "\n```", inline = false },
+                        { name = "🔄 Total Cycle",  value = "**" .. tostring(cycle) .. "x**",        inline = false },
+                    },
+                    footer = { text = "DDS Premium Script   Time: " .. os.date("%H:%M:%S") }
+                }}
+            }
+            local body = HttpService:JSONEncode(payload)
+            task.spawn(function()
+                pcall(function()
+                    if syn and syn.request then syn.request({ Url = webhookOfficeURL, Method = "POST", Headers = { ["Content-Type"] = "application/json" }, Body = body })
+                    elseif request then request({ Url = webhookOfficeURL, Method = "POST", Headers = { ["Content-Type"] = "application/json" }, Body = body }) end
+                end)
+            end)
+        else
+            print("Gagal membaca uang dari UI!")
+        end
+    end
+})
+
+whOfficeToggle = OfficeWebhookSection:Toggle({
+    Title = "Aktifkan Webhook Office",
+    Value = false,
+    Callback = function(v)
+        webhookOfficeActive = v
+        if not isWhOfficeLoading then
+            whOfficeConfig.Active = v
+            saveOfficeWebhookConfig(whOfficeConfig)
+
+            if v then
+                local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+                local moneyLabel = nil
+                pcall(function() moneyLabel = PlayerGui.MainUI.Frame4.TextLabel end)
+                if moneyLabel then
+                    uangAwalOffice = parseUang(moneyLabel.Text)
+                    OfficeModule.totalCycle = 0
+                    print("Webhook Office aktif! Uang awal: " .. formatUang(uangAwalOffice))
+                end
+
+                -- INI YANG KURANG: set onCycle biar auto kirim tiap print selesai
+                OfficeModule.onCycle = function()
+                    if not webhookOfficeActive or webhookOfficeURL == "" then return end
+                    local pGui = LocalPlayer:WaitForChild("PlayerGui")
+                    local mLabel = nil
+                    pcall(function() mLabel = pGui.MainUI.Frame4.TextLabel end)
+                    if not mLabel then return end
+
+                    local uangSekarang = parseUang(mLabel.Text)
+                    if uangAwalOffice == nil then uangAwalOffice = uangSekarang end
+                    local profit = uangSekarang - uangAwalOffice
+                    local cycle  = OfficeModule.totalCycle or 0
+
+                    local payload = {
+                        embeds = {{
+                            title       = "💼 Office Job - Cycle Selesai",
+                            description = "**Status:** `✅ Print Berhasil`",
+                            color       = 3066993,
+                            fields      = {
+                                { name = "💵 Uang Awal",     value = "**" .. formatUang(uangAwalOffice) .. "**",     inline = false },
+                                { name = "💰 Uang Sekarang", value = "**" .. formatUang(uangSekarang) .. "**",       inline = false },
+                                { name = "📈 Total Profit",  value = "```diff\n+ " .. formatUang(profit) .. "\n```", inline = false },
+                                { name = "🔄 Total Cycle",   value = "**" .. tostring(cycle) .. "x**",               inline = false },
+                            },
+                            footer = { text = "DDS Premium Script   Time: " .. os.date("%H:%M:%S") }
+                        }}
+                    }
+                    local body = HttpService:JSONEncode(payload)
+                    task.spawn(function()
+                        pcall(function()
+                            if syn and syn.request then
+                                syn.request({ Url = webhookOfficeURL, Method = "POST", Headers = { ["Content-Type"] = "application/json" }, Body = body })
+                            elseif request then
+                                request({ Url = webhookOfficeURL, Method = "POST", Headers = { ["Content-Type"] = "application/json" }, Body = body })
+                            end
+                        end)
+                    end)
+                    print("[Office] Webhook terkirim! Cycle #" .. tostring(cycle))
+                end
+
+            else
+                -- Matikan onCycle saat toggle off
+                OfficeModule.onCycle = nil
+                print("Webhook Office dimatikan!")
+            end
+        end
+    end
+})
+
+task.spawn(function()
+    task.wait(0.5)
+    if whOfficeConfig.Active then
+        whOfficeToggle:Set(true)
+    end
+    isWhOfficeLoading = false
+end)
+
+
+
 -- =============================================
 -- BARISTA (Inside BaristaTab)
 -- =============================================
 
-local JobSection = BaristaTab:Section({
+JobSection = BaristaTab:Section({
     Title          = "Auto Job Barista",
     Box            = true,
     TextXAlignment = "Center",
@@ -2121,7 +2375,7 @@ local JobSection = BaristaTab:Section({
 })
 
 -- Toggle Auto Barista
-local baristaToggle = JobSection:Toggle({
+baristaToggle = JobSection:Toggle({
     Title = "Auto Barista",
     Value = false,
     Callback = function(on)
@@ -2159,7 +2413,7 @@ JobSection:Input({
     end
 })
 
-local restartToggle = JobSection:Toggle({
+restartToggle = JobSection:Toggle({
     Title = "Auto Restart",
     Value = false,
     Callback = function(on)
@@ -2194,7 +2448,7 @@ JobSection:Input({
     end
 })
 
-local kickToggle = JobSection:Toggle({
+kickToggle = JobSection:Toggle({
     Title = "Toggle Auto Kick",
     Value = false,
     Callback = function(on)
@@ -2210,9 +2464,9 @@ local kickToggle = JobSection:Toggle({
 -- WEBHOOK SECTION (merged into BaristaTab)
 -- =============================================
 
-local WebhookSection = BaristaTab:Section({ Title = "Discord Webhook", Box = true, TextXAlignment = "Center", TextSize = 15, Opened = true })
+WebhookSection = BaristaTab:Section({ Title = "Discord Webhook", Box = true, TextXAlignment = "Center", TextSize = 15, Opened = true })
 
-local whUrlInput = WebhookSection:Input({
+whUrlInput = WebhookSection:Input({
     Type = "Input",
     Title = "Webhook URL",
     Value = whConfig.URL or "",
@@ -2227,7 +2481,7 @@ local whUrlInput = WebhookSection:Input({
     end
 })
 
-local whDelayInput = WebhookSection:Input({
+whDelayInput = WebhookSection:Input({
     Type = "Input",
     Title = "Delay Kirim (detik)",
     Value = tostring(whConfig.Delay or 10),
@@ -2267,7 +2521,7 @@ WebhookSection:Button({
     end
 })
 
-local whToggle = WebhookSection:Toggle({
+whToggle = WebhookSection:Toggle({
     Title = "Aktifkan Webhook",
     Value = false,
     Callback = function(v)
@@ -2296,7 +2550,7 @@ local whToggle = WebhookSection:Toggle({
 -- COURIER (Inside CourierTab)
 -- =============================================
 
-local CourierSection = CourierTab:Section({ Title = "Auto Job Courier", Box = true, TextXAlignment = "Center", TextSize = 15, Opened = true })
+CourierSection = CourierTab:Section({ Title = "Auto Job Courier", Box = true, TextXAlignment = "Center", TextSize = 15, Opened = true })
 
 CourierSection:Button({
     Title = "Accept Job Courier",
@@ -2305,7 +2559,7 @@ CourierSection:Button({
     end
 })
 
-local courierToggle = CourierSection:Toggle({
+courierToggle = CourierSection:Toggle({
     Title = "Auto Work Courier",
     Value = false,
     Callback = function(on)
@@ -2347,9 +2601,9 @@ CourierSection:Button({
     Callback = function() stopCourierLoop() end
 })
 
-local CourierWebhookSection = CourierTab:Section({ Title = "Discord Webhook Courier", Box = true, TextXAlignment = "Center", TextSize = 15, Opened = true })
+CourierWebhookSection = CourierTab:Section({ Title = "Discord Webhook Courier", Box = true, TextXAlignment = "Center", TextSize = 15, Opened = true })
 
-local whCourierUrlInput = CourierWebhookSection:Input({
+whCourierUrlInput = CourierWebhookSection:Input({
     Type = "Input",
     Title = "Webhook URL",
     Value = whCourierConfig.URL or "",
@@ -2407,7 +2661,7 @@ CourierWebhookSection:Button({
     end
 })
 
-local whCourierToggle = CourierWebhookSection:Toggle({
+whCourierToggle = CourierWebhookSection:Toggle({
     Title = "Aktifkan Webhook Courier",
     Value = false,
     Callback = function(v)
@@ -3109,7 +3363,7 @@ end)()
 -- GUI - TAB SETTINGS
 -- =============================================
 
-local FreecamTab = Window:Tab({
+FreecamTab = Window:Tab({
     Title = "Settings",
     Icon = "settings",
 	IconColor = Mains,
@@ -3117,9 +3371,9 @@ local FreecamTab = Window:Tab({
 	Border = true,
 })
 
-local HideStatsSection = FreecamTab:Section({ Title = "Hide Stats", Box = true, TextXAlignment = "Center", TextSize = 15, Opened = false })
+HideStatsSection = FreecamTab:Section({ Title = "Hide Stats", Box = true, TextXAlignment = "Center", TextSize = 15, Opened = false })
 
-local hideStatsToggle = HideStatsSection:Toggle({
+hideStatsToggle = HideStatsSection:Toggle({
     Title = "Enable Hide Stats",
     Value = false,
     Callback = function(on)
@@ -3131,7 +3385,7 @@ local hideStatsToggle = HideStatsSection:Toggle({
     end
 })
 
-local fakeNameInput = HideStatsSection:Input({
+fakeNameInput = HideStatsSection:Input({
     Type = "Input", 
     Title = "Fake Name",
     Value = uiConfig.FakeName or "King Vypers",
@@ -3146,7 +3400,7 @@ local fakeNameInput = HideStatsSection:Input({
 })
 HideStats.SetFakeName(uiConfig.FakeName or "King Vypers")
 
-local fakeRankInput = HideStatsSection:Input({
+fakeRankInput = HideStatsSection:Input({
     Type = "Input", 
     Title = "Fake Rank",
     Value = uiConfig.FakeRank or "King Vypers 👑",
@@ -3165,9 +3419,9 @@ HideStats.SetFakeRank(uiConfig.FakeRank or "King Vypers 👑")
 -- GUI - PERFORMANCE SECTION (di Settings tab)
 -- =============================================
 
-local PerformanceSection = FreecamTab:Section({ Title = "Performance", Box = true, TextXAlignment = "Center", TextSize = 15, Opened = false })
+PerformanceSection = FreecamTab:Section({ Title = "Performance", Box = true, TextXAlignment = "Center", TextSize = 15, Opened = false })
 
-local potatoToggle = PerformanceSection:Toggle({
+potatoToggle = PerformanceSection:Toggle({
     Title = "FPS Booster (Potato Mode)",
     Value = false,
     Callback = function(on)
@@ -3179,7 +3433,7 @@ local potatoToggle = PerformanceSection:Toggle({
     end
 })
 
-local disableRenderToggle = PerformanceSection:Toggle({
+disableRenderToggle = PerformanceSection:Toggle({
     Title = "Disable 3D Rendering",
     Value = false,
     Callback = function(on)
@@ -3193,7 +3447,7 @@ local disableRenderToggle = PerformanceSection:Toggle({
 
 local selectedFpsCap = 60
 
-local fpscapDropdown = PerformanceSection:Dropdown({
+fpscapDropdown = PerformanceSection:Dropdown({
     Title = "FPS Cap",
     Options = {"60", "90", "120", "240"},
     Value = uiConfig.FpsCap or "60",
@@ -3208,7 +3462,7 @@ local fpscapDropdown = PerformanceSection:Dropdown({
 })
 selectedFpsCap = tonumber(uiConfig.FpsCap) or 60
 
-local fpsUnlockToggle = PerformanceSection:Toggle({
+fpsUnlockToggle = PerformanceSection:Toggle({
     Title = "Enable FPS Unlock",
     Value = false,
     Callback = function(on)
@@ -3229,9 +3483,9 @@ local fpsUnlockToggle = PerformanceSection:Toggle({
 -- GUI - PROTECTION SECTION (di Settings tab)
 -- =============================================
 
-local ProtectionSection = FreecamTab:Section({ Title = "Protection", Box = true, TextXAlignment = "Center", TextSize = 15, Opened = false })
+ProtectionSection = FreecamTab:Section({ Title = "Protection", Box = true, TextXAlignment = "Center", TextSize = 15, Opened = false })
 
-local antiAfkToggle = ProtectionSection:Toggle({
+antiAfkToggle = ProtectionSection:Toggle({
     Title = "Anti-AFK",
     Value = false,
     Callback = function(on)
@@ -3243,7 +3497,7 @@ local antiAfkToggle = ProtectionSection:Toggle({
     end
 })
 
-local antiStaffToggle = ProtectionSection:Toggle({
+antiStaffToggle = ProtectionSection:Toggle({
     Title = "Anti Staff (Auto Kick)",
     Value = false,
     Callback = function(on)
@@ -3277,10 +3531,10 @@ end
 local settingsConfig = loadSettingsConfig()
 local isSettingsLoading = true
 
-local ReconnectSection = FreecamTab:Section({ Title = "Auto Reconnect & Execute", Box = true, TextXAlignment = "Center", TextSize = 15, Opened = false })
+ReconnectSection = FreecamTab:Section({ Title = "Auto Reconnect & Execute", Box = true, TextXAlignment = "Center", TextSize = 15, Opened = false })
 
 -- Toggle combined: Auto Reconnect
-local reconnectToggle = ReconnectSection:Toggle({
+reconnectToggle = ReconnectSection:Toggle({
     Title = "Enable Auto Reconnect",
     Value = false,
     Callback = function(on)
@@ -3298,7 +3552,7 @@ local reconnectToggle = ReconnectSection:Toggle({
 
 -- Toggle: Auto Execute setelah rejoin
 -- Kalau ON, script King Vypers akan otomatis ke-load lagi setelah rejoin
-local autoExecToggle = ReconnectSection:Toggle({
+autoExecToggle = ReconnectSection:Toggle({
     Title = "Auto Execute Setelah Rejoin",
     Value = false,
     Callback = function(on)
@@ -3326,7 +3580,9 @@ task.spawn(function()
     if bCfg.TimeoutEnabled   then restartToggle:Set(true)  end
     if bCfg.KickLimitEnabled then kickToggle:Set(true)     end
     if bCfg.AutoBarista      then baristaToggle:Set(true)  end
+    if oCfg.AutoOffice       then OfficeToggle:Set(true)   end
     isBLoading = false
+    isOLoading = false
 
     -- Restore Auto Reconnect & Execute (config lama)
     if settingsConfig.AutoReconnect then reconnectToggle:Set(true) end
