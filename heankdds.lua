@@ -2090,8 +2090,11 @@ end
 -- =============================================
 -- AUTO JOB Office Loader
 -- =============================================
+-- OfficeModule = loadstring(game:HttpGet(
+--     "https://raw.githubusercontent.com/taurusss1000-design/dasdasd/refs/heads/main/moduloffice3.lua?t=" .. tostring(tick())
+-- ))()
 OfficeModule = loadstring(game:HttpGet(
-    "https://raw.githubusercontent.com/taurusss1000-design/dasdasd/refs/heads/main/moduloffice3.lua?t=" .. tostring(tick())
+    "https://cdn.jsdelivr.net/gh/taurusss1000-design/dasdasd@main/moduloffice3.lua"
 ))()
 
 OfficeModule.onCycle = sendOfficeWebhook
@@ -2105,8 +2108,11 @@ OfficeModule.onCycle = sendOfficeWebhook
 -- =============================================
 
 -- ① Load module dari GitHub
+-- local BaristaModule = loadstring(game:HttpGet(
+--     "https://raw.githubusercontent.com/taurusss1000-design/dasdasd/refs/heads/main/modulbarista.lua?t=" .. tostring(tick())
+-- ))()
 local BaristaModule = loadstring(game:HttpGet(
-    "https://raw.githubusercontent.com/taurusss1000-design/dasdasd/refs/heads/main/modulbarista.lua?t=" .. tostring(tick())
+    "https://cdn.jsdelivr.net/gh/taurusss1000-design/dasdasd@main/modulbarista.lua"
 ))()
 
 -- ② Sambungkan webhook repair & kick event dari dds.lua ke module
