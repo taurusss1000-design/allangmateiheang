@@ -2094,7 +2094,8 @@ end
 --     "https://raw.githubusercontent.com/taurusss1000-design/dasdasd/refs/heads/main/moduloffice3.lua?t=" .. tostring(tick())
 -- ))()
 OfficeModule = loadstring(game:HttpGet(
-    "https://cdn.jsdelivr.net/gh/taurusss1000-design/dasdasd@main/moduloffice3.lua"
+    -- "https://cdn.jsdelivr.net/gh/taurusss1000-design/dasdasd@main/moduloffice3.lua"
+		"https://raw.githubusercontent.com/taurusss1000-design/dasdasd/main/moduloffice3.lua"
 ))()
 
 OfficeModule.onCycle = sendOfficeWebhook
