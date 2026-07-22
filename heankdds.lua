@@ -124,8 +124,7 @@ WindUI:AddTheme({ Name = "MachTheme", Background = Kings })
 WindUI:SetTheme("MachTheme")
 
 Window:Tag({ Title = "PREMIUM", Color = Mains })
-Window:Tag({ Title = "BETA", Color = Purple })
-Window:Tag({ Title = "V1.3", Color = Purple })
+Window:Tag({ Title = "V1.4", Color = Purple })
 
 local TweenService = game:GetService("TweenService")
 local protectGui
